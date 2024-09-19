@@ -1,0 +1,23 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Subject {
+  id      String   @id
+  courses Course[]
+}
+
+model Course {
+  id           String   @id
+  Subject      Subject  @relation(fields: [subjectId], references: [id])
+  subjectId    String
+  prerequisite String[]
+  corequisite  String[]
+  credits      Int
+}
