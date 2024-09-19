@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 
 class CourseScraper:
-    def __init__(self, config, url):
+    def __init__(self, config):
         self.config = config
         self.subjects = self.get_subjects()
 
@@ -20,12 +20,22 @@ class CourseScraper:
                 a_tag = li.find("a")
                 if a_tag:
                     subject = a_tag.text.split(" - ")[0].strip()
+                    subject = subject.replace("_", "").lower()
                     subjects.append(subject)
 
         return subjects
 
     def scrape(self):
-        pass
+        # https://vancouver.calendar.ubc.ca/course-descriptions/subject/{subject}
+        for subject in self.subjects:
+            print(subject)
+            url = f"https://vancouver.calendar.ubc.ca/course-descriptions/subject/{subject}"
+            response = requests.get(url)
+            soup = BeautifulSoup(response.text, "html.parser")
+            raw_courses = soup.find_all("ol", class_="list-none")
+
+            print(raw_courses)
+            break
 
     def process_data(self, data):
         pass
@@ -39,5 +49,6 @@ class CourseScraper:
         self.save_to_supabase(processed_data)
 
 
-test = CourseScraper("config", "url")
+test = CourseScraper("config")
 test.get_subjects()
+test.scrape()
