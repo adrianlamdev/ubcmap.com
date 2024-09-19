@@ -8,15 +8,21 @@ class CourseScraper:
         self.config = config
         self.subjects = self.get_subjects()
 
-    def extract_subject(self, subject):
-        pass
-
     def get_subjects(self):
-        # https://vancouver.calendar.ubc.ca/course-descriptions/courses-subject
         url = "https://vancouver.calendar.ubc.ca/course-descriptions/courses-subject"
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
         raw_subjects = soup.find_all("ol", class_="list-buttons")
+
+        subjects = []
+        for ol in raw_subjects:
+            for li in ol.find_all("li"):
+                a_tag = li.find("a")
+                if a_tag:
+                    subject = a_tag.text.split(" - ")[0].strip()
+                    subjects.append(subject)
+
+        return subjects
 
     def scrape(self):
         pass
