@@ -16,35 +16,27 @@ generator client {
 /// @@allow('read', true)
 model Subject {
   id         String   @id()
+  name       String   @unique()
   courses    Course[]
   created_at DateTime @default(now())
+
+  @@map("subjects")
 }
 
 /// @@allow('read', true)
 model Course {
-  title            String
-  code             Int
-  description      String
-  Subject          Subject              @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  created_at       DateTime             @default(now())
-  subjectId        String
-  prerequisiteText String?
-  prerequisites    CoursePrerequisite[] @relation("CourseToPrerequisite")
-  prerequisiteFor  CoursePrerequisite[] @relation("PrerequisiteToCourse")
-  corequisite      String[]
-  credits          Int
+  id                String   @id()
+  title             String   @unique()
+  description       String?
+  subject           Subject  @relation(fields: [subject_id], references: [id], onDelete: Cascade)
+  subject_id        String
+  prerequisite_text String?
+  prerequisites     Course[] @relation("CoursePrerequisites")
+  prerequisite_for  Course[] @relation("CoursePrerequisites")
+  corequisites      Course[] @relation("CourseCorequisites")
+  corequisite_for   Course[] @relation("CourseCorequisites")
+  created_at        DateTime @default(now())
+  credits           Int
 
-  @@id([title, code])
-}
-
-/// @@allow('read', true)
-model CoursePrerequisite {
-  course       Course @relation("CourseToPrerequisite", fields: [courseTitle, courseCode], references: [title, code])
-  courseTitle  String
-  courseCode   Int
-  prerequisite Course @relation("PrerequisiteToCourse", fields: [prereqTitle, prereqCode], references: [title, code])
-  prereqTitle  String
-  prereqCode   Int
-
-  @@id([courseTitle, courseCode, prereqTitle, prereqCode])
+  @@map("courses")
 }
