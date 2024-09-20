@@ -55,6 +55,7 @@ def test_scrape_adhe_courses(scraper, mock_requests_get):
     mock_requests_get.return_value.status_code = 200
     subject = Subject("adhev", "Adult Education")
     num_courses = scraper.scrape_subject(subject)
+    print(subject.name, scraper.subjects)
     assert num_courses == 1, "There should be one ADHE course"
     assert (
         subject.name in scraper.subjects

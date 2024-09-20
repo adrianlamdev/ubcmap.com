@@ -14,7 +14,6 @@ model Subject {
   courses    Course[] 
   created_at DateTime @default(now())
   
-  @@map("subjects")
   @@allow('read', true)
 }
 
@@ -32,6 +31,5 @@ model Course {
   created_at       DateTime          @default(now())
   credits          Int
 
-  @@map("courses")
   @@allow('read', true)
 }

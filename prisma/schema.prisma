@@ -19,8 +19,6 @@ model Subject {
   name       String   @unique()
   courses    Course[]
   created_at DateTime @default(now())
-
-  @@map("subjects")
 }
 
 /// @@allow('read', true)
@@ -37,6 +35,4 @@ model Course {
   corequisite_for   Course[] @relation("CourseCorequisites")
   created_at        DateTime @default(now())
   credits           Int
-
-  @@map("courses")
 }

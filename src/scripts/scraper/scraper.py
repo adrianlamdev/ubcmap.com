@@ -1,20 +1,16 @@
 import logging
 from typing import Dict, List, Optional
 import time
-
-import os
-from supabase import create_client, Client
-
 import requests
 from requests.exceptions import RequestException
 import re
 from bs4 import BeautifulSoup
+from supabase import create_client, Client
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
-
 
 url: str = "https://crypzuepzmuggyxcdkjg.supabase.co"
 key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXB6dWVwem11Z2d5eGNka2pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY3MTQ5NTIsImV4cCI6MjA0MjI5MDk1Mn0.ZfqNiucGmTUjQKaYEJP5gx9JX4tqzshk9cnGI-8gc78"
@@ -22,23 +18,17 @@ supabase: Client = create_client(url, key)
 
 
 class Subject:
-    def __init__(self, name: str, title: str):
-        self.name = name
+    def __init__(self, id: str, title: str):
+        self.id = id
         self.title = title
         self.courses: List[CourseInfo] = []
 
     def to_dict(self) -> Dict:
         return {
-            "name": self.name,
+            "id": self.id,
             "title": self.title,
             "courses": [course.to_dict() for course in self.courses],
         }
-
-
-class CourseScraperConfig:
-    BASE_URL = "https://vancouver.calendar.ubc.ca"
-    SUBJECTS_URL = f"{BASE_URL}/course-descriptions/courses-subject"
-    COURSE_URL = f"{BASE_URL}/course-descriptions/subject/"
 
 
 class CourseInfo:
@@ -69,6 +59,13 @@ class CourseInfo:
         }
 
 
+class CourseScraperConfig:
+    BASE_URL = "https://vancouver.calendar.ubc.ca"
+    SUBJECTS_URL = f"{BASE_URL}/course-descriptions/courses-subject"
+    COURSE_URL = f"{BASE_URL}/course-descriptions/subject/"
+    SPECIFIC_SUBJECTS = ["cpenv", "mathv", "cpscv"]
+
+
 class CourseScraper:
     def __init__(self, config: Dict):
         self.config = config
@@ -88,17 +85,22 @@ class CourseScraper:
                     if a_tag:
                         name_title = a_tag.text.strip().split(" - ")
                         if len(name_title) == 2:
-                            name = name_title[0].replace("_", "").lower()
+                            id = name_title[0].replace("_", "").lower()
                             title = name_title[1]
-                            subjects.append(Subject(name, title))
-                            # print(name, title)
+                            subject = Subject(id, title)
+                            self.subjects[id] = subject
+                            subjects.append(subject)
+                            logger.info(f"Found subject: {id} - {title}")
+
             return subjects
         except RequestException as e:
             logger.error(f"Error fetching subjects: {e}")
             return []
 
     def scrape_subject(self, subject: Subject) -> int:
-        url = f"{CourseScraperConfig.COURSE_URL}{subject.name}"
+        if subject.id not in self.subjects:
+            self.subjects[subject.id] = subject
+        url = f"{CourseScraperConfig.COURSE_URL}{subject.id}"
         try:
             response = requests.get(url)
             response.raise_for_status()
@@ -112,7 +114,7 @@ class CourseScraper:
 
             return len(subject.courses)
         except RequestException as e:
-            logger.error(f"Error scraping subject {subject.name}: {e}")
+            logger.error(f"Error scraping subject {subject.id}: {e}")
             return 0
 
     def _extract_course_info(self, course_html) -> Optional[CourseInfo]:
@@ -153,33 +155,40 @@ class CourseScraper:
         )
 
     def _save_to_supabase(self, subject: Subject):
-        pass
-        # response = (
-        #     supabase.table("Subject")
-        #     .upsert({"id": subject.name, "title": subject.title})
-        #     .execute()
-        # )
-        #
-        # for course in subject.courses:
-        #     supabase.table("Courses").upsert(
-        #         {"subject_id": subject.name, **course.to_dict()}
-        #     ).execute()
+        try:
+            # Upsert subject
+            supabase.table("Subject").upsert(
+                {"id": subject.id, "name": subject.title}
+            ).execute()
+
+            # TODO: Upsert courses
+            # for course in subject.courses:
+            #     print(**course.to_dict())
+            #     supabase.table("Course").upsert(
+            #         {"subject_id": subject.id, **course.to_dict()}
+            #     ).execute()
+
+            logger.info(f"Saved subject {subject.id} and its courses to Supabase")
+        except Exception as e:
+            logger.error(f"Error saving to Supabase: {e}")
 
     def run(self):
         start_time = time.time()
         logger.info("Scraping process started...")
 
         subjects = self.get_subjects()
+        total_courses = 0
+
         for subject in subjects:
-            if subject.name in ["mathv", "cpscv", "cpenv"]:
-                logger.info(f"Scraping {subject.name}...")
+            if subject.id in CourseScraperConfig.SPECIFIC_SUBJECTS:
+                logger.info(f"Scraping {subject.id}...")
                 num_courses = self.scrape_subject(subject)
-                logger.info(f"Scraped {num_courses} courses for {subject.name}")
+                total_courses += num_courses
+                logger.info(f"Scraped {num_courses} courses for {subject.id}")
                 self._save_to_supabase(subject)
-                self.subjects[subject.name] = subject
-                print(subject.to_dict())
 
         end_time = time.time()
         processing_time = end_time - start_time
 
         logger.info(f"Scraping process completed in {processing_time:.2f} seconds.")
+        logger.info(f"Total courses scraped: {total_courses}")
