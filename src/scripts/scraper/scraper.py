@@ -2,6 +2,9 @@ import logging
 from typing import Dict, List, Optional
 import time
 
+import os
+from supabase import create_client, Client
+
 import requests
 from requests.exceptions import RequestException
 import re
@@ -11,6 +14,10 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+url: str = "https://crypzuepzmuggyxcdkjg.supabase.co"
+key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXB6dWVwem11Z2d5eGNka2pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY3MTQ5NTIsImV4cCI6MjA0MjI5MDk1Mn0.ZfqNiucGmTUjQKaYEJP5gx9JX4tqzshk9cnGI-8gc78"
+supabase: Client = create_client(url, key)
 
 
 class CourseScraperConfig:
@@ -141,8 +148,12 @@ class CourseScraper:
             for subject, courses in self.courses.items()
         }
 
-    def _save_to_supabase(self, processed_data: Dict[str, List[Dict]]):
-        # Implement saving to Supabase here
+    async def _save_to_supabase(self):
+        # TODO: Implement this function
+        for subject, courses in self.courses.items():
+            supabase.table("Subjects").insert({}).execute()
+            for course in courses:
+                supabase.table("Courses").insert({}).execute()
         pass
 
     def run(self):
