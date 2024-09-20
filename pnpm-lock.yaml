@@ -168,6 +168,9 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.0
+      '@zenstackhq/openapi':
+        specifier: ^2.5.1
+        version: 2.5.1(@prisma/client@5.19.1(prisma@5.19.1))
       eslint:
         specifier: ^8
         version: 8.57.1
@@ -1298,6 +1301,9 @@ packages:
 
   '@zenstackhq/language@2.5.1':
     resolution: {integrity: sha512-ov0I6CaMy1/nIoYy3z6pqqd9K7ClhgrVPY3eHZzzm9KsVwZhDg3jNFmYStdpkldbY90kFAjZ6CF3/O/bSggr7w==}
+
+  '@zenstackhq/openapi@2.5.1':
+    resolution: {integrity: sha512-ry3cnZ4AMyKxaADd/zbNVLoRMWhgYfJUc8tAIHCToNscobdqDYl49mXcm9QcMnaApID5sdd9HT/kr1WizYEOqA==}
 
   '@zenstackhq/runtime@2.5.1':
     resolution: {integrity: sha512-GsfEXk90zQ0Eq0eOOOHPnAcmw/rZvOQYGSpi69Yx9gqUe6J+GTR+uxhpIVZ4Z+ZgKMrV02I8ZgzAL/Nr2bzWfQ==}
@@ -2454,6 +2460,9 @@ packages:
   onetime@5.1.2:
     resolution: {integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==}
     engines: {node: '>=6'}
+
+  openapi-types@12.1.3:
+    resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -4343,6 +4352,23 @@ snapshots:
     dependencies:
       langium: 1.3.1
 
+  '@zenstackhq/openapi@2.5.1(@prisma/client@5.19.1(prisma@5.19.1))':
+    dependencies:
+      '@zenstackhq/runtime': 2.5.1(@prisma/client@5.19.1(prisma@5.19.1))
+      '@zenstackhq/sdk': 2.5.1(@prisma/client@5.19.1(prisma@5.19.1))
+      change-case: 4.1.2
+      lower-case-first: 2.0.2
+      openapi-types: 12.1.3
+      semver: 7.6.3
+      tiny-invariant: 1.3.3
+      ts-pattern: 4.3.0
+      upper-case-first: 2.0.2
+      yaml: 2.5.1
+      zod: 3.23.8
+      zod-validation-error: 1.5.0(zod@3.23.8)
+    transitivePeerDependencies:
+      - '@prisma/client'
+
   '@zenstackhq/runtime@2.5.1(@prisma/client@5.19.1(prisma@5.19.1))':
     dependencies:
       '@prisma/client': 5.19.1(prisma@5.19.1)
@@ -5751,6 +5777,8 @@ snapshots:
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
+
+  openapi-types@12.1.3: {}
 
   optionator@0.9.4:
     dependencies:
