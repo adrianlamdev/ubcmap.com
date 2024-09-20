@@ -10,6 +10,7 @@ generator client {
 
 plugin openapi {
     provider = "@zenstackhq/openapi"
+    prefix = '/api/v1'
     output = "ubcmap-api.json"
     title = "UBCMap API"
     version = "1.0.0"

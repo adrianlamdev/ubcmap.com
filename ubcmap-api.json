@@ -15,7 +15,7 @@
     }
   ],
   "paths": {
-    "/subject": {
+    "/api/v1/subject": {
       "get": {
         "operationId": "list-Subject",
         "description": "List \"Subject\" resources",
@@ -260,7 +260,7 @@
         }
       }
     },
-    "/subject/{id}": {
+    "/api/v1/subject/{id}": {
       "get": {
         "operationId": "fetch-Subject",
         "description": "Fetch a \"Subject\" resource",
@@ -473,7 +473,7 @@
         }
       }
     },
-    "/subject/{id}/courses": {
+    "/api/v1/subject/{id}/courses": {
       "get": {
         "operationId": "fetch-Subject-related-courses",
         "description": "Fetch the related \"courses\" resource for \"Subject\"",
@@ -683,7 +683,7 @@
         "security": []
       }
     },
-    "/subject/{id}/relationships/courses": {
+    "/api/v1/subject/{id}/relationships/courses": {
       "get": {
         "operationId": "fetch-Subject-relationship-courses",
         "description": "Fetch the \"courses\" relationships for a \"Subject\"",
@@ -1049,7 +1049,7 @@
         }
       }
     },
-    "/course": {
+    "/api/v1/course": {
       "get": {
         "operationId": "list-Course",
         "description": "List \"Course\" resources",
@@ -1534,7 +1534,7 @@
         }
       }
     },
-    "/course/{id}": {
+    "/api/v1/course/{id}": {
       "get": {
         "operationId": "fetch-Course",
         "description": "Fetch a \"Course\" resource",
@@ -1747,7 +1747,7 @@
         }
       }
     },
-    "/course/{id}/subject": {
+    "/api/v1/course/{id}/subject": {
       "get": {
         "operationId": "fetch-Course-related-subject",
         "description": "Fetch the related \"subject\" resource for \"Course\"",
@@ -1797,7 +1797,7 @@
         "security": []
       }
     },
-    "/course/{id}/relationships/subject": {
+    "/api/v1/course/{id}/relationships/subject": {
       "get": {
         "operationId": "fetch-Course-relationship-subject",
         "description": "Fetch the \"subject\" relationships for a \"Course\"",
@@ -1950,7 +1950,7 @@
         }
       }
     },
-    "/course/{id}/prerequisites": {
+    "/api/v1/course/{id}/prerequisites": {
       "get": {
         "operationId": "fetch-Course-related-prerequisites",
         "description": "Fetch the related \"prerequisites\" resource for \"Course\"",
@@ -2400,7 +2400,7 @@
         "security": []
       }
     },
-    "/course/{id}/relationships/prerequisites": {
+    "/api/v1/course/{id}/relationships/prerequisites": {
       "get": {
         "operationId": "fetch-Course-relationship-prerequisites",
         "description": "Fetch the \"prerequisites\" relationships for a \"Course\"",
@@ -3006,7 +3006,7 @@
         }
       }
     },
-    "/course/{id}/prerequisite_for": {
+    "/api/v1/course/{id}/prerequisite_for": {
       "get": {
         "operationId": "fetch-Course-related-prerequisite_for",
         "description": "Fetch the related \"prerequisite_for\" resource for \"Course\"",
@@ -3456,7 +3456,7 @@
         "security": []
       }
     },
-    "/course/{id}/relationships/prerequisite_for": {
+    "/api/v1/course/{id}/relationships/prerequisite_for": {
       "get": {
         "operationId": "fetch-Course-relationship-prerequisite_for",
         "description": "Fetch the \"prerequisite_for\" relationships for a \"Course\"",
@@ -4062,7 +4062,7 @@
         }
       }
     },
-    "/course/{id}/corequisites": {
+    "/api/v1/course/{id}/corequisites": {
       "get": {
         "operationId": "fetch-Course-related-corequisites",
         "description": "Fetch the related \"corequisites\" resource for \"Course\"",
@@ -4512,7 +4512,7 @@
         "security": []
       }
     },
-    "/course/{id}/relationships/corequisites": {
+    "/api/v1/course/{id}/relationships/corequisites": {
       "get": {
         "operationId": "fetch-Course-relationship-corequisites",
         "description": "Fetch the \"corequisites\" relationships for a \"Course\"",
@@ -5118,7 +5118,7 @@
         }
       }
     },
-    "/course/{id}/corequisite_for": {
+    "/api/v1/course/{id}/corequisite_for": {
       "get": {
         "operationId": "fetch-Course-related-corequisite_for",
         "description": "Fetch the related \"corequisite_for\" resource for \"Course\"",
@@ -5568,7 +5568,7 @@
         "security": []
       }
     },
-    "/course/{id}/relationships/corequisite_for": {
+    "/api/v1/course/{id}/relationships/corequisite_for": {
       "get": {
         "operationId": "fetch-Course-relationship-corequisite_for",
         "description": "Fetch the \"corequisite_for\" relationships for a \"Course\"",
