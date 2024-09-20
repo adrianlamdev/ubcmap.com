@@ -16,6 +16,8 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+url: str = "https://crypzuepzmuggyxcdkjg.supabase.co"
+key: str = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNyeXB6dWVwem11Z2d5eGNka2pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjY3MTQ5NTIsImV4cCI6MjA0MjI5MDk1Mn0.ZfqNiucGmTUjQKaYEJP5gx9JX4tqzshk9cnGI-8gc78"
 supabase: Client = create_client(url, key)
 
 
@@ -139,21 +141,27 @@ class CourseScraper:
 
     def _scrape(self) -> Dict[str, List[Dict]]:
         for subject in self.subjects:
-            logger.info(f"Scraping {subject}...")
-            num_courses = self.scrape_subject(subject)
-            logger.info(f"Scraped {num_courses} courses for {subject}")
+            if subject == "mathv" or subject == "cpscv" or subject == "cpenv":
+                logger.info(f"Scraping {subject}...")
+                num_courses = self.scrape_subject(subject)
+                logger.info(f"Scraped {num_courses} courses for {subject}")
+                self._save_to_supabase(subject, self.courses[subject])
         return {
             subject: [course.to_dict() for course in courses]
             for subject, courses in self.courses.items()
         }
 
-    async def _save_to_supabase(self):
+    def _save_to_supabase(self, subject: str, courses: List[CourseInfo]):
         # TODO: Implement this function
-        for subject, courses in self.courses.items():
-            supabase.table("Subjects").insert({}).execute()
-            for course in courses:
-                supabase.table("Courses").insert({}).execute()
-        pass
+
+        # for subject, courses in self.courses.items():
+        #     supabase.table("Subjects").insert({}).execute()
+        #     for course in courses:
+        #         supabase.table("Courses").insert({}).execute()
+        response = supabase.table("Subject").upsert({"id": subject}).execute()
+
+        for course in courses:
+            pass
 
     def run(self):
         start_time = time.time()  # Start time
