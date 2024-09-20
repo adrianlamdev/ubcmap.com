@@ -8,6 +8,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
+plugin openapi {
+    provider = "@zenstackhq/openapi"
+    output = "openapi.yaml"
+    title = "UBCMap API"
+    version = "1.0.0"
+}
+
 model Subject {
   id         String   @id
   name       String   @unique
