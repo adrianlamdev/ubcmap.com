@@ -10,9 +10,16 @@ generator client {
 
 plugin openapi {
     provider = "@zenstackhq/openapi"
-    output = "openapi.yaml"
+    output = "ubcmap-api.json"
     title = "UBCMap API"
     version = "1.0.0"
+    flavor = "rest"
+}
+
+plugin hooks {
+  provider = '@zenstackhq/swr'
+  target = 'react'
+  output = "./src/lib/hooks"
 }
 
 model Subject {

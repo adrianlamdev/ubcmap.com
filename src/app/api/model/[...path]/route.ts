@@ -1,5 +1,3 @@
-// http://localhost:3000/api/model/subject/findMany?q=%7B%7D
-
 import { NextRequestHandler } from "@zenstackhq/server/next";
 import type { NextRequest } from "next/server";
 import { enhance } from "@zenstackhq/runtime";
