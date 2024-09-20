@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from scripts.scraper.scraper import CourseScraper, CourseInfo
+from scripts.scraper.scraper import CourseScraper, CourseInfo, Subject
 import requests
 
 
@@ -26,8 +26,8 @@ def test_get_subjects(scraper, mock_requests_get):
     mock_requests_get.return_value.status_code = 200
     subjects = scraper.get_subjects()
     assert len(subjects) == 2
-    assert "adhev" in subjects
-    assert "mathv" in subjects
+    assert any(s.name == "adhev" for s in subjects)
+    assert any(s.name == "mathv" for s in subjects)
 
 
 def test_get_specific_subject(scraper, mock_requests_get):
@@ -39,7 +39,9 @@ def test_get_specific_subject(scraper, mock_requests_get):
     """
     mock_requests_get.return_value.status_code = 200
     subjects = scraper.get_subjects()
-    assert "adhev" in subjects, "adhev should be in the list of subjects"
+    assert any(
+        s.name == "adhev" for s in subjects
+    ), "adhev should be in the list of subjects"
 
 
 def test_scrape_adhe_courses(scraper, mock_requests_get):
@@ -51,16 +53,17 @@ def test_scrape_adhe_courses(scraper, mock_requests_get):
     </article>
     """
     mock_requests_get.return_value.status_code = 200
-    num_courses = scraper.scrape_subject("adhev")
+    subject = Subject("adhev", "Adult Education")
+    num_courses = scraper.scrape_subject(subject)
     assert num_courses == 1, "There should be one ADHE course"
     assert (
-        "adhev" in scraper.courses
-    ), "ADHE courses should be stored in the courses dictionary"
+        subject.name in scraper.subjects
+    ), "ADHE subject should be stored in the subjects dictionary"
     assert (
-        len(scraper.courses["adhev"]) == num_courses
+        len(subject.courses) == num_courses
     ), "Number of courses should match the returned count"
 
-    sample_course = scraper.courses["adhev"][0]
+    sample_course = subject.courses[0]
     assert sample_course.code == "ADHE_V 327", "Course code should be correct"
     assert sample_course.title == "Teaching Adults", "Course title should be correct"
     assert (
@@ -96,8 +99,9 @@ def test_specific_adhe_courses(
     </article>
     """
     mock_requests_get.return_value.status_code = 200
-    scraper.scrape_subject("adhev")
-    course = next((c for c in scraper.courses["adhev"] if c.code == course_code), None)
+    subject = Subject("adhev", "Adult Education")
+    scraper.scrape_subject(subject)
+    course = next((c for c in subject.courses if c.code == course_code), None)
     assert course is not None, f"{course_code} should exist"
     assert (
         course.title == expected_title
@@ -114,7 +118,8 @@ def test_scrape_subject_unexpected_html(scraper, mock_requests_get):
         "<html><body>Unexpected structure</body></html>"
     )
     mock_requests_get.return_value.status_code = 200
-    num_courses = scraper.scrape_subject("adhev")
+    subject = Subject("adhev", "Adult Education")
+    num_courses = scraper.scrape_subject(subject)
     assert num_courses == 0, "No courses should be scraped from unexpected HTML"
 
 
@@ -123,7 +128,8 @@ def test_scrape_subject_request_exception(scraper, mock_requests_get):
     mock_requests_get.side_effect = requests.exceptions.RequestException(
         "Mocked exception"
     )
-    num_courses = scraper.scrape_subject("adhev")
+    subject = Subject("adhev", "Adult Education")
+    num_courses = scraper.scrape_subject(subject)
     assert (
         num_courses == 0
     ), "No courses should be scraped when a request exception occurs"
