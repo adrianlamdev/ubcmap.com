@@ -12,17 +12,34 @@ model Subject {
   id         String   @id
   courses    Course[]
   created_at DateTime @default(now())
+  @@allow('read', true)
 }
 
 model Course {
-  id           String   @id
-  title        String
-  code         Int
-  description  String
-  Subject      Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
-  created_at   DateTime @default(now())
-  subjectId    String
-  prerequisite String[]
-  corequisite  String[]
-  credits      Int
+  title            String
+  code             Int
+  description      String
+  Subject          Subject           @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  created_at       DateTime          @default(now())
+  subjectId        String
+  prerequisiteText String?
+  prerequisites    CoursePrerequisite[] @relation("CourseToPrerequisite")
+  prerequisiteFor  CoursePrerequisite[] @relation("PrerequisiteToCourse")
+  corequisite      String[]
+  credits          Int
+
+  @@id([title, code])
+  @@allow('read', true)
+}
+
+model CoursePrerequisite {
+  course        Course @relation("CourseToPrerequisite", fields: [courseTitle, courseCode], references: [title, code])
+  courseTitle   String
+  courseCode    Int
+  prerequisite  Course @relation("PrerequisiteToCourse", fields: [prereqTitle, prereqCode], references: [title, code])
+  prereqTitle   String
+  prereqCode    Int
+
+  @@id([courseTitle, courseCode, prereqTitle, prereqCode])
+  @@allow('read', true)
 }
