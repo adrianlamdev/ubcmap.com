@@ -1,8 +1,25 @@
+import {
+  FeatureCard,
+  FeatureCardDescription,
+  FeatureCardLink,
+  FeatureCardTitle,
+} from "@/components/custom/FeatureCard";
 import PageContainer from "@/components/custom/PageContainer";
-import { Button } from "@/components/ui/button";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
-import Link from "next/link";
+
+const features = [
+  {
+    title: "Degree Explorer",
+    description: "Visualize course paths for various majors and careers",
+    linkHref: "/paths",
+    linkText: "Discover Paths",
+  },
+  {
+    title: "Course Analytics",
+    description: "Access grade distributions and prerequisite information",
+    linkHref: "/courses",
+    linkText: "Explore Courses",
+  },
+];
 
 export default function Home() {
   return (
@@ -24,28 +41,17 @@ export default function Home() {
       {/* Checker Footer: Disclaimer: "CampusCompass is not affiliated with or */}
       {/* endorsed by UBC" About Us Contact/Feedback Terms of Use & Privacy Policy */}
       <div className="flex flex-col gap-8">
-        <div className="bg-muted p-5">
-          <h2 className="text-sm text-muted-foreground">Degree Explorer</h2>
-          <p className="text-lg mt-2">
-            Visualize course paths for various majors and careers
-          </p>
-          <Button asChild className="gap-3 mt-4 px-0" variant="link">
-            <Link href="/paths">
-              Discover Paths <ArrowRightIcon />
-            </Link>
-          </Button>
-        </div>
-        <div className="bg-muted p-5">
-          <h2 className="text-sm text-muted-foreground">Course Analytics</h2>
-          <p className="text-lg mt-2">
-            Access grade distributions and prerequisite information
-          </p>
-          <Button asChild className="gap-3 mt-4 px-0" variant="link">
-            <Link href="/paths">
-              Explore Courses <ArrowRightIcon />
-            </Link>
-          </Button>
-        </div>
+        {features.map((feature) => (
+          <FeatureCard>
+            <FeatureCardTitle>{feature.title}</FeatureCardTitle>
+            <FeatureCardDescription>
+              {feature.description}
+            </FeatureCardDescription>
+            <FeatureCardLink href={feature.linkHref}>
+              {feature.linkText}
+            </FeatureCardLink>
+          </FeatureCard>
+        ))}
       </div>
     </PageContainer>
   );
