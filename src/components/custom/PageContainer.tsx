@@ -10,7 +10,7 @@ export default function PageContainer({
   return (
     <main
       className={cn(
-        "mx-auto max-w-5xl px-5 md:h-screen md:max-h-[950px] md:max-w-7xl",
+        "mx-auto max-w-5xl px-6 md:h-screen md:max-h-[950px] md:max-w-7xl",
         className,
       )}
     >
