@@ -5,6 +5,7 @@ import {
 	FeatureCardTitle,
 } from "@/components/custom/FeatureCard";
 import PageContainer from "@/components/custom/PageContainer";
+import { FancyBox } from "@/components/custom/fancy-box";
 
 const features = [
 	{
