@@ -25,6 +25,7 @@ export default function PageContainer({
   };
 
   const paddingClasses = {
+    none: "",
     sm: "px-4",
     md: "px-6",
     lg: "px-8",
