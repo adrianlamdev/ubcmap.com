@@ -1,5 +1,9 @@
-import PageContainer from "@/components/custom/PageContainer";
+import PageContainer from "@/components/custom/page-container";
 
 export default function NotFoundPage() {
-	return <PageContainer></PageContainer>;
+  return (
+    <PageContainer fullHeight>
+      <p>404</p>
+    </PageContainer>
+  );
 }

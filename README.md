@@ -41,3 +41,63 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 <https://zoom-chart-demo.vercel.app/>
 <https://nyxbui.design/docs/components/dock>
 <https://github.com/salimi-my/shadcn-ui-sidebar>
+
+Reviews and Ratings:
+
+Allow students to rate and review courses
+Provide difficulty ratings and time commitment estimates
+
+Prerequisite Chain Visualizer:
+
+Show the full chain of prerequisites for any given course
+Help students plan long-term course selection
+
+Degree Audit Tool:
+
+Automatically check student's completed courses against degree requirements
+Highlight missing requirements or elective options
+
+Course Offering Predictor:
+
+Based on historical data, predict which terms specific courses might be offered
+
+Collaborative Planning:
+
+Allow students to share and compare their degree plans
+Facilitate finding study partners for upcoming courses
+
+Integration with UBC Systems:
+
+If possible, link with UBC's official systems for real-time course availability and registration
+
+Elective Recommender:
+
+Suggest electives based on student's interests and career goals
+Show how different electives fit into the overall degree planDegree Path Visualizer:
+
+Interactive flowchart of courses required for math and CS degrees
+Show prerequisites and course relationships
+Allow students to mark completed courses and see remaining requirements
+
+Course Planner:
+
+Drag-and-drop interface for planning future semesters
+Automatically check for prerequisite conflicts
+Show how choices affect graduation timeline
+
+Grade Calculator:
+
+Allow students to input current grades and calculate GPA
+Predict how future grades might affect overall GPA
+
+Specialization Explorer:
+
+Compare different specializations within math or CS
+Show how choosing a specialization affects required courses
+
+Career Path Insights:
+
+Link courses to potential career paths
+Showcase alumni profiles and their course choices
+
+Course
