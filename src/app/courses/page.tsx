@@ -1,19 +1,91 @@
+import {
+  CourseCard,
+  CourseCardCode,
+  CourseCardFooter,
+  CourseCardLink,
+  CourseCardRating,
+  CourseCardTitle,
+} from "@/components/custom/course-card";
 import PageContainer from "@/components/custom/page-container";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowRightIcon,
   CaretSortIcon,
   MagnifyingGlassIcon,
 } from "@radix-ui/react-icons";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  CourseCard,
-  CourseCardCode,
-  CourseCardTitle,
-  CourseCardLink,
-  CourseCardRating,
-} from "@/components/custom/course-card";
+
+const courses = [
+  {
+    code: "CPSC 110",
+    title: "Computation, Programs, and Programming",
+    rating: 4.5,
+    links: [
+      {
+        href: "/rate-course",
+        variant: "primary",
+        text: "Rate this course",
+      },
+      {
+        href: "/course-details",
+        variant: "secondary",
+        text: "View course details",
+      },
+    ],
+  },
+  {
+    code: "CPSC 121",
+    title: "Models of Computation",
+    rating: 4.2,
+    links: [
+      {
+        href: "/rate-course",
+        variant: "primary",
+        text: "Rate this course",
+      },
+      {
+        href: "/course-details",
+        variant: "secondary",
+        text: "View course details",
+      },
+    ],
+  },
+  {
+    code: "CPSC 210",
+    title: "Software Construction",
+    rating: 4.7,
+    links: [
+      {
+        href: "/rate-course",
+        variant: "primary",
+        text: "Rate this course",
+      },
+      {
+        href: "/course-details",
+        variant: "secondary",
+        text: "View course details",
+      },
+    ],
+  },
+  {
+    code: "CPSC 213",
+    title: "Introduction to Computer Systems",
+    rating: 4.3,
+    links: [
+      {
+        href: "/rate-course",
+        variant: "primary",
+        text: "Rate this course",
+      },
+      {
+        href: "/course-details",
+        variant: "secondary",
+        text: "View course details",
+      },
+    ],
+  },
+];
 
 export default function CoursesPage() {
   return (
@@ -39,35 +111,13 @@ export default function CoursesPage() {
         </Button>
       </div>
       <div className="flex flex-col gap-6 mt-2">
-        <CourseCard>
-          <CourseCardCode>CPSC 110</CourseCardCode>
-          <CourseCardTitle>
-            Computation, Programs, and Programming
-          </CourseCardTitle>
-          <div className="flex items-center justify-between">
-            <div>
-              <CourseCardLink href="/rate-course" variant="primary">
-                Rate this course
-              </CourseCardLink>
-              <CourseCardLink href="/course-details" variant="secondary">
-                View course details
-              </CourseCardLink>
-            </div>
-            <CourseCardRating rating={4.5} />
-          </div>
-        </CourseCard>
-        <CourseCard>
-          <CourseCardCode>CPSC 110</CourseCardCode>
-          <CourseCardTitle>
-            Computation, Programs, and Programming
-          </CourseCardTitle>
-          <CourseCardLink href="/course-details" variant="primary">
-            View course details
-          </CourseCardLink>
-          <CourseCardLink href="/rate-course" variant="secondary">
-            Rate this course
-          </CourseCardLink>
-        </CourseCard>
+        {courses.map((course) => (
+          <CourseCard key={course.code}>
+            <CourseCardCode>{course.code}</CourseCardCode>
+            <CourseCardTitle>{course.title}</CourseCardTitle>
+            <CourseCardFooter rating={course.rating} links={course.links} />
+          </CourseCard>
+        ))}
         <Skeleton className="w-full h-40" />
         <Skeleton className="w-full h-40" />
         <Skeleton className="w-full h-40" />

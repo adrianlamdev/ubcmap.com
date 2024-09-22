@@ -44,31 +44,64 @@ const CourseCardRating = React.forwardRef<
 ));
 CourseCardRating.displayName = "CourseCardRating";
 
-const CourseCardLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<typeof Link> & {
-    variant?: "primary" | "secondary";
-  }
->(({ className, children, variant = "primary", ...props }, ref) => {
-  const buttonClass =
-    variant === "primary"
-      ? "rounded-none group"
-      : "border-primary border rounded-none group bg-background text-primary hover:bg-accent";
+interface CourseCardLinkProps
+  extends React.ComponentPropsWithoutRef<typeof Link> {
+  variant?: "primary" | "secondary";
+}
 
-  return (
-    <div
-      className={`flex items-center group ${variant === "primary" ? "mt-6" : "mt-2"}`}
-    >
-      <Button className={buttonClass}>
-        {children}
-        <ArrowRightIcon
-          className={`w-4 h-4 ml-2 transition-transform duration-200 ease-in-out group-hover:translate-x-2 ${variant === "primary" ? "text-background" : "text-primary"}`}
-        />
-      </Button>
-    </div>
-  );
-});
+const CourseCardLink = React.forwardRef<HTMLAnchorElement, CourseCardLinkProps>(
+  ({ children, variant = "primary", ...props }, ref) => {
+    const buttonClass =
+      variant === "primary"
+        ? "rounded-none group"
+        : "border-primary border rounded-none group bg-background text-primary hover:bg-accent";
+    return (
+      <Link {...props} passHref>
+        <Button className={buttonClass}>
+          {children}
+          <ArrowRightIcon
+            className={`w-4 h-4 ml-2 transition-transform duration-200 ease-in-out group-hover:translate-x-2 ${
+              variant === "primary" ? "text-background" : "text-primary"
+            }`}
+          />
+        </Button>
+      </Link>
+    );
+  },
+);
 CourseCardLink.displayName = "CourseCardLink";
+
+interface LinkData {
+  href: string;
+  text: string;
+  variant: string;
+}
+
+interface CourseCardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  rating: number;
+  links: LinkData[];
+}
+
+const CourseCardFooter = React.forwardRef<
+  HTMLDivElement,
+  CourseCardFooterProps
+>(({ rating, links, className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={`flex items-center justify-between mt-6 ${className}`}
+    {...props}
+  >
+    <div className="flex flex-col gap-2">
+      {links.map((link, index) => (
+        <CourseCardLink key={index} href={link.href} variant={link.variant}>
+          {link.text}
+        </CourseCardLink>
+      ))}
+    </div>
+    <CourseCardRating rating={rating} />
+  </div>
+));
+CourseCardFooter.displayName = "CourseCardFooter";
 
 export {
   CourseCard,
@@ -76,4 +109,5 @@ export {
   CourseCardTitle,
   CourseCardRating,
   CourseCardLink,
+  CourseCardFooter,
 };
