@@ -6,7 +6,7 @@ import {
 } from "@/components/custom/feature-card";
 import PageContainer from "@/components/custom/page-container";
 import { Button } from "@/components/ui/button";
-import { ChevronRightIcon } from "@radix-ui/react-icons";
+import { BarChartIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 const features = [
   {
     title: "Degree Navigator",
@@ -19,12 +19,15 @@ const features = [
     description: "Visualize course paths for various majors and careers",
     linkHref: "/paths",
     linkText: "Discover Paths",
+
+    icon: <MagnifyingGlassIcon />,
   },
   {
     title: "Course Analytics",
     description: "Access grade distributions and prerequisite information",
     linkHref: "/courses",
     linkText: "Explore Courses",
+    icon: <BarChartIcon />,
   },
 ];
 
@@ -32,21 +35,19 @@ export default function Home() {
   return (
     <PageContainer className="pt-16">
       <div>
-        <h1 className="text-4xl font-bold tracking-tight text-center">
+        <h1 className="text-4xl font-bold tracking-tight text-center text-foreground">
           Navigate Your UBC Academic Journey
         </h1>
-        <p className="mt-6 text-base text-center">
+        <p className="mt-6 text-base text-center text-muted-foreground">
           Your all-in-one platform for degree planning, course exploration, and
           academic insights.
         </p>
         <div className="mt-6 flex flex-col gap-2">
-          <Button className="w-full gap-2" size="lg" variant="outline">
-            Start Exploring
-            <ChevronRightIcon className="w-4 h-4" />
-          </Button>
           <Button className="w-full gap-2" size="lg">
+            Start Exploring
+          </Button>
+          <Button className="w-full gap-2" size="lg" variant="outline">
             Get a Quick Demo
-            <ChevronRightIcon className="w-4 h-4 text-primary" />
           </Button>
         </div>
       </div>
@@ -55,10 +56,13 @@ export default function Home() {
       {/* Utility Tools: GPA Calculator Study Schedule Optimizer Prerequisite */}
       {/* Checker Footer: Disclaimer: "CampusCompass is not affiliated with or */}
       {/* endorsed by UBC" About Us Contact/Feedback Terms of Use & Privacy Policy */}
-      <div className="flex flex-col gap-6 mt-12">
+      <div className="flex flex-col mt-12">
         {features.map((feature, index) => (
           <FeatureCard key={index}>
-            <FeatureCardTitle>{feature.title}</FeatureCardTitle>
+            <FeatureCardTitle className="flex items-center gap-2">
+              {feature.icon}
+              {feature.title}
+            </FeatureCardTitle>
             <FeatureCardDescription>
               {feature.description}
             </FeatureCardDescription>

@@ -29,7 +29,7 @@ body {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
+    --card: 0 0% 96%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
@@ -54,7 +54,7 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: #000;
+    --background: 0 0 0%;
     --foreground: 0 0% 93%;
     --card: 0 0 4%;
     --card-foreground: 0 0% 98%;
@@ -71,6 +71,8 @@ body {
     --destructive: 354 82% 49%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0 18%;
+    --border-ghost: 0 0 14%;
+    --border-hover: 0 0 27%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --chart-1: 220 70% 50%;
