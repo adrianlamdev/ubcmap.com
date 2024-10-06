@@ -1,17 +1,60 @@
 {
-  "id": "bf16cc98-95a3-4a88-a507-9121b97a5225",
+  "id": "67b28fc3-66ae-40cd-8e2d-1cc03923ce87",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.courses": {
-      "name": "courses",
+    "public.BScRequirement": {
+      "name": "BScRequirement",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "min_science_credits": {
+          "name": "min_science_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_arts_credits": {
+          "name": "min_arts_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_communication_credits": {
+          "name": "required_communication_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_science_categories": {
+          "name": "required_science_categories",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_total_credits": {
+          "name": "min_total_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_upper_level_credits": {
+          "name": "required_upper_level_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_non_science_arts_credits": {
+          "name": "max_non_science_arts_credits",
+          "type": "integer",
+          "primaryKey": false,
           "notNull": true
         }
       },
@@ -20,19 +63,129 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.subjects": {
-      "name": "subjects",
+    "public.Course": {
+      "name": "Course",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "subject_code": {
+          "name": "subject_code",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true
+        },
+        "number": {
+          "name": "number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "credits": {
+          "name": "credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_upper_level": {
+          "name": "is_upper_level",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "year_level": {
+          "name": "year_level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_laboratory": {
+          "name": "is_laboratory",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Course_subject_code_Subject_code_fk": {
+          "name": "Course_subject_code_Subject_code_fk",
+          "tableFrom": "Course",
+          "tableTo": "Subject",
+          "columnsFrom": [
+            "subject_code"
+          ],
+          "columnsTo": [
+            "code"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.CourseCategory": {
+      "name": "CourseCategory",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "name": {
           "name": "name",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_science": {
+          "name": "is_science",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_arts": {
+          "name": "is_arts",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "is_communication": {
+          "name": "is_communication",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "science_category": {
+          "name": "science_category",
+          "type": "scienceCategory",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         }
@@ -41,9 +194,420 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
+    },
+    "public.CourseRequirement": {
+      "name": "CourseRequirement",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_course_id": {
+          "name": "required_course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "requirementType",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requirement_text": {
+          "name": "requirement_text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "CourseRequirement_course_id_Course_id_fk": {
+          "name": "CourseRequirement_course_id_Course_id_fk",
+          "tableFrom": "CourseRequirement",
+          "tableTo": "Course",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "CourseRequirement_required_course_id_Course_id_fk": {
+          "name": "CourseRequirement_required_course_id_Course_id_fk",
+          "tableFrom": "CourseRequirement",
+          "tableTo": "Course",
+          "columnsFrom": [
+            "required_course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Degree": {
+      "name": "Degree",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "degreeType",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bsc_requirement_id": {
+          "name": "bsc_requirement_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Degree_bsc_requirement_id_BScRequirement_id_fk": {
+          "name": "Degree_bsc_requirement_id_BScRequirement_id_fk",
+          "tableFrom": "Degree",
+          "tableTo": "BScRequirement",
+          "columnsFrom": [
+            "bsc_requirement_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.PromotionRequirement": {
+      "name": "PromotionRequirement",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "bsc_requirement_id": {
+          "name": "bsc_requirement_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "year_level": {
+          "name": "year_level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_credits_required": {
+          "name": "min_credits_required",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_science_credits_required": {
+          "name": "min_science_credits_required",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_science_credits_100_level": {
+          "name": "min_science_credits_100_level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_science_credits_200_level": {
+          "name": "min_science_credits_200_level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_science_credits_any_level": {
+          "name": "min_science_credits_any_level",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_lab_science_credits": {
+          "name": "min_lab_science_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "min_communication_credits": {
+          "name": "min_communication_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "PromotionRequirement_bsc_requirement_id_BScRequirement_id_fk": {
+          "name": "PromotionRequirement_bsc_requirement_id_BScRequirement_id_fk",
+          "tableFrom": "PromotionRequirement",
+          "tableTo": "BScRequirement",
+          "columnsFrom": [
+            "bsc_requirement_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.ScienceBreadthRequirement": {
+      "name": "ScienceBreadthRequirement",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "bsc_requirement_id": {
+          "name": "bsc_requirement_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "scienceCategory",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "required_credits": {
+          "name": "required_credits",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ScienceBreadthRequirement_bsc_requirement_id_BScRequirement_id_fk": {
+          "name": "ScienceBreadthRequirement_bsc_requirement_id_BScRequirement_id_fk",
+          "tableFrom": "ScienceBreadthRequirement",
+          "tableTo": "BScRequirement",
+          "columnsFrom": [
+            "bsc_requirement_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Specialization": {
+      "name": "Specialization",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "degree_id": {
+          "name": "degree_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Specialization_degree_id_Degree_id_fk": {
+          "name": "Specialization_degree_id_Degree_id_fk",
+          "tableFrom": "Specialization",
+          "tableTo": "Degree",
+          "columnsFrom": [
+            "degree_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.SpecializationCourse": {
+      "name": "SpecializationCourse",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "specialization_id": {
+          "name": "specialization_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "course_id": {
+          "name": "course_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_required": {
+          "name": "is_required",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "SpecializationCourse_specialization_id_Specialization_id_fk": {
+          "name": "SpecializationCourse_specialization_id_Specialization_id_fk",
+          "tableFrom": "SpecializationCourse",
+          "tableTo": "Specialization",
+          "columnsFrom": [
+            "specialization_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "SpecializationCourse_course_id_Course_id_fk": {
+          "name": "SpecializationCourse_course_id_Course_id_fk",
+          "tableFrom": "SpecializationCourse",
+          "tableTo": "Course",
+          "columnsFrom": [
+            "course_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Subject": {
+      "name": "Subject",
+      "schema": "",
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "public.degreeType": {
+      "name": "degreeType",
+      "schema": "public",
+      "values": [
+        "major"
+      ]
+    },
+    "public.requirementType": {
+      "name": "requirementType",
+      "schema": "public",
+      "values": [
+        "prerequisite",
+        "corequisite"
+      ]
+    },
+    "public.scienceCategory": {
+      "name": "scienceCategory",
+      "schema": "public",
+      "values": [
+        "math",
+        "chemistry",
+        "physics",
+        "life_science",
+        "statistics",
+        "computer_science",
+        "earth_planetary_science"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {
